@@ -64,7 +64,7 @@ const $=i=>document.getElementById(i),f=$('f');
 const optional=l=>/opcional/.test(l);
 f.innerHTML=F.map(([id,l,t,o,g])=>{
  if(id==='sec')return `<h2>${l}</h2>`;
- const r=optional(l)||['cdir','ctel','cemail'].includes(id)?'':'required';
+ const r=optional(l)||g||['cdir','ctel','cemail'].includes(id)?'':'required';
  let c;
  if(t==='sel')c=`<select id="${id}">${o.map(x=>`<option>${x}</option>`).join('')}</select>`;
  else if(t==='mun')c=`<select id="${id}" data-m="1">${MUN.map(x=>`<option>${x}</option>`).join('')}<option value="__o">Otro (escribir)</option></select><input id="${id}_o" class="hid" placeholder="Municipio, Departamento">`;
