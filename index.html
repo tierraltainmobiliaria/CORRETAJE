@@ -1,81 +1,110 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contrato de corretaje inmobiliario</title>
+<title>Contrato de corretaje inmobiliario · Tierra Alta Inmobiliaria</title>
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.3.0/dist/pizzip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.71.1/build/docxtemplater.js"></script>
 <style>
-body{font-family:Arial,sans-serif;max-width:760px;margin:0 auto;padding:16px;color:#222}
-h1{font-size:1.3rem}h2{font-size:1.05rem;margin:22px 0 4px;border-bottom:1px solid #ccc}
-label{display:block;margin:10px 0 2px;font-size:.9rem}
-input,select{width:100%;padding:9px;font-size:1rem;box-sizing:border-box;margin-bottom:2px}
-button{padding:11px 16px;font-size:1rem;margin:12px 8px 0 0;cursor:pointer}
-#out{margin-top:24px;padding:16px;border:1px solid #ccc;text-align:justify;font-size:.95rem}
-.hid{display:none}#st{margin-top:10px;font-weight:bold}
-@media print{.no-print{display:none}#out{border:0}}
+:root{--ink:#2b3440;--mute:#6b7683;--line:#d8dee6;--acc:#e8590c;--acc2:#c74a08;--bg:#f3f5f8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.top{background:#fff;border-bottom:4px solid var(--acc);padding:14px 20px}
+.logos{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:28px}
+.logos img{height:64px;width:auto}.logos .sep{width:1px;height:48px;background:var(--line)}
+.hero{max-width:860px;margin:0 auto;padding:30px 20px 6px;text-align:center}
+.hero h1{margin:0 0 6px;font-size:1.7rem;letter-spacing:.2px}
+.hero p{margin:0 auto;max-width:560px;color:var(--mute)}
+main{max-width:860px;margin:0 auto;padding:14px 16px 40px}
+form{counter-reset:s}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:18px;box-shadow:0 6px 20px rgba(30,45,60,.06)}
+.card h2{counter-increment:s;margin:0 0 16px;font-size:1.05rem;display:flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--ink)}
+.card h2:before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.w{grid-column:1/-1}.hid{display:none!important}
+label{display:block;margin-bottom:5px;font-size:.82rem;font-weight:600;color:var(--ink)}
+input,select{width:100%;padding:12px 13px;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px;transition:.15s}
+input:focus,select:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 4px rgba(232,89,12,.14)}
+input[readonly]{background:#f3f5f8;font-weight:600}
+.hint{margin-top:5px;font-size:.78rem;color:var(--mute)}
+.seg{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:12px}
+.seg button{flex:1;padding:10px 8px;border:0;border-radius:9px;background:transparent;font:inherit;font-size:.9rem;color:var(--mute);cursor:pointer;transition:.15s}
+.seg button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 2px 8px rgba(30,45,60,.15)}
+.go{width:100%;margin-top:22px;padding:16px;font:inherit;font-size:1.05rem;font-weight:700;color:#fff;border:0;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 8px 20px rgba(232,89,12,.3)}
+.go:disabled{opacity:.6;cursor:wait}
+#st{margin-top:16px;padding:14px 16px;border-radius:12px;font-size:.95rem;display:none}
+#st.ok{display:block;background:#e9f7ef;color:#1e6b3b;border:1px solid #bfe5cd}
+#st.err{display:block;background:#fdecea;color:#9b2c1f;border:1px solid #f5c2bb}
+#st a{color:inherit;font-weight:700}
+footer{text-align:center;color:var(--mute);font-size:.8rem;padding:0 16px 30px}
 </style></head><body>
-<div class="no-print">
-<h1>Contrato de corretaje inmobiliario</h1>
-<p>Complete los datos y se descargará el contrato en Word, listo para revisar y firmar.</p>
-<form id="f"></form><div id="st"></div></div>
+<header class="top"><div class="logos"><img src="logo_ing3dreco.png" alt="ING3DRECO"><span class="sep"></span><img src="logo_tierra_alta.png" alt="Tierra Alta Inmobiliaria"></div></header>
+<div class="hero"><h1>Contrato de corretaje inmobiliario</h1><p>Complete los datos del propietario y del inmueble. Al finalizar se descargará el contrato en Word, listo para revisar y firmar.</p></div>
+<main><form id="f" novalidate></form><div id="st"></div></main>
+<footer>TIERRA ALTA INMOBILIARIA · Una marca de ING3DRECO SAS</footer>
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwqqJLRWDPOtkgsfWM-s6STMw-efvCky0x_ZYzU-3JGlyCiJX9mBCz9MK6WCUX2iPWG0w/exec'; 
+const CORREDOR={cnombre:'Brandon Alvis',cced:'1.075.314.206 expedida en Neiva, Huila',cdom:'Cartagena del Chairá, Caquetá',ccargo:'Director Comercial',cemp:'ING3DRECO SAS',cnit:'901580047-1',cdir:'Cartagena del Chairá, Barrio Antioquia',ctel:'3118236593',cemail:'tierraltainmobiliaria@gmail.com'};
 const MUN=['Cartagena del Chairá','Puerto Rico','San Vicente del Caguán','Florencia','Albania','Belén de los Andaquíes','Curillo','El Doncello','El Paujil','La Montañita','Milán','Morelia','San José del Fragua','Solano','Solita','Valparaíso'];
-const F=[
-['sec','Propietario'],
-['nombre','Nombre completo','text'],
-['sexo','Sexo','sel',['Mujer','Hombre']],
-['cedula','Cédula de ciudadanía N.º','text'],
-['domicilio','Municipio de domicilio','mun'],
-['calidad','¿Actúa en nombre propio o en representación de una empresa?','sel',['En nombre propio','En representación de una empresa']],
-['empresa','Razón social de la empresa','text','','emp'],
-['nit','NIT de la empresa','text','','emp'],
-['dir','Dirección de notificación','text'],
-['tel','Teléfono / WhatsApp','text'],
-['email','Correo electrónico','email'],
-['sec','Inmueble'],
-['tipo','Tipo de inmueble','sel',['casa','lote urbano','lote rural','apartamento','local comercial','finca']],
-['ubic','Ubicación (dirección, barrio o vereda)','text'],
-['muni_inm','Municipio del inmueble','mun'],
-['area','Área aproximada y medidas','text'],
-['matricula','Matrícula inmobiliaria N.º','text'],
-['catastral','Cédula catastral N.º','text'],
-['grav','Embargos o gravámenes (opcional; vacío = ninguno)','text'],
-['sec','Condiciones'],
-['precio','Precio mínimo de venta (COP)','number'],
-['pct','Comisión (%)','number','5'],
-['dias','Días hábiles para pagos y reportes','number','3'],
-['prot','Días de protección posterior a la terminación','number','90'],
-['sede','Sede del tribunal de arbitramento','sel',['del domicilio de [P]','del lugar donde se encuentra EL INMUEBLE']],
-['sec','Corredor'],
-['cnombre','Nombre del corredor','text','Brandon Alvis'],
-['cced','Cédula del corredor','text','1.075.314.206 expedida en Neiva, Huila'],
-['cdom','Domicilio del corredor','text','Cartagena del Chairá, Caquetá'],
-['ccargo','Cargo','text','director comercial'],
-['cemp','Empresa','text','ING3DRECO SAS'],
-['cnit','NIT','text','901580047-1'],
-['cdir','Dirección de notificación del corredor','text',''],
-['ctel','Teléfono del corredor','text',''],
-['cemail','Correo del corredor','email',''],
-['sec','Firma'],
-['lugar','Municipio de firma','mun'],
-['fecha','Fecha','date']
-];
+const EXP=[...MUN.map(m=>m+', Caquetá'),'Neiva, Huila','Bogotá D.C.','Medellín, Antioquia','Cali, Valle del Cauca'];
+// t: text|tel|email|number|date|sel|seg|mun|ro ; w: ancho completo ; g: grupo condicional ; o: opciones ; opt: opcional
+const S=[
+['Propietario',[
+ {id:'nombre',l:'Nombre completo',t:'text',w:1},
+ {id:'sexo',l:'Sexo',t:'seg',o:['Mujer','Hombre']},
+ {id:'cedula',l:'Cédula de ciudadanía N.º',t:'text',m:'numeric'},
+ {id:'cedula_exp',l:'Ciudad de expedición de la cédula',t:'text',list:'exp',ph:'Ej. Puerto Rico, Caquetá'},
+ {id:'domicilio',l:'Municipio de domicilio',t:'mun'},
+ {id:'calidad',l:'¿Actúa en nombre propio o en representación de una empresa?',t:'seg',o:['En nombre propio','En representación de una empresa'],w:1},
+ {id:'empresa',l:'Razón social de la empresa',t:'text',g:'emp',w:1},
+ {id:'nit',l:'NIT de la empresa',t:'text',g:'emp'},
+ {id:'dir',l:'Dirección de notificación',t:'text',w:1},
+ {id:'tel',l:'Teléfono / WhatsApp',t:'tel'},
+ {id:'email',l:'Correo electrónico (opcional)',t:'email',h:'Si no tiene, déjelo vacío: las notificaciones se harán a la dirección y al teléfono.'}]],
+['Inmueble',[
+ {id:'tipo',l:'Tipo de inmueble',t:'sel',o:['Casa','Lote Urbano','Lote Rural','Apartamento','Local Comercial','Finca']},
+ {id:'muni_inm',l:'Municipio del inmueble',t:'mun'},
+ {id:'ubic',l:'Ubicación (dirección, barrio o vereda)',t:'text',w:1},
+ {id:'forma',l:'Medidas del predio',t:'seg',o:['Regular (ancho × largo)','Irregular (digitar área)'],w:1},
+ {id:'ancho',l:'Ancho o frente (metros)',t:'number',g:'reg'},
+ {id:'largo',l:'Largo o fondo (metros)',t:'number',g:'reg'},
+ {id:'area',l:'Área aproximada',t:'ro',g:'reg',h:'Se calcula automáticamente: ancho × largo.'},
+ {id:'area_man',l:'Área del predio',t:'number',g:'irr'},
+ {id:'unidad',l:'Unidad',t:'sel',o:['m²','hectáreas'],g:'irr'},
+ {id:'matricula',l:'Matrícula inmobiliaria N.º',t:'text'},
+ {id:'catastral',l:'Cédula catastral N.º (opcional)',t:'text'},
+ {id:'grav',l:'Embargos o gravámenes (opcional)',t:'text',w:1,h:'Déjelo vacío si no tiene.'}]],
+['Condiciones del negocio',[
+ {id:'precio',l:'Precio mínimo de venta (COP)',t:'number',w:1,h:' '},
+ {id:'pct',l:'Comisión (%)',t:'number',v:'5'},
+ {id:'dias',l:'Días hábiles para pagos y reportes',t:'number',v:'3'},
+ {id:'prot',l:'Días de protección posterior',t:'number',v:'90'},
+ {id:'sede',l:'Sede del tribunal de arbitramento',t:'sel',o:['del domicilio de [P]','del lugar donde se encuentra EL INMUEBLE']}]],
+['Firma',[
+ {id:'lugar',l:'Municipio de firma',t:'mun'},
+ {id:'fecha',l:'Fecha',t:'date'}]]];
 const $=i=>document.getElementById(i),f=$('f');
-const optional=l=>/opcional/.test(l);
-f.innerHTML=F.map(([id,l,t,o,g])=>{
- if(id==='sec')return `<h2>${l}</h2>`;
- const r=optional(l)||g||['cdir','ctel','cemail'].includes(id)?'':'required';
+const fld=x=>{
+ const req=!/opcional/.test(x.l)&&!x.g&&x.t!=='ro'&&!x.h?.startsWith('Déjelo')?'required':'';
  let c;
- if(t==='sel')c=`<select id="${id}">${o.map(x=>`<option>${x}</option>`).join('')}</select>`;
- else if(t==='mun')c=`<select id="${id}" data-m="1">${MUN.map(x=>`<option>${x}</option>`).join('')}<option value="__o">Otro (escribir)</option></select><input id="${id}_o" class="hid" placeholder="Municipio, Departamento">`;
- else c=`<input id="${id}" type="${t}" value="${o||''}" ${r}>`;
- return `<div class="${g||''} ${g?'hid':''}"><label>${l}</label>${c}</div>`}).join('')+'<button type="submit">Generar contrato</button>';
+ if(x.t==='sel')c=`<select id="${x.id}">${x.o.map(o=>`<option>${o}</option>`).join('')}</select>`;
+ else if(x.t==='seg')c=`<div class="seg" data-for="${x.id}">${x.o.map((o,i)=>`<button type="button" class="${i||x.id==='sexo'?'':'on'}" data-v="${o}">${o}</button>`).join('')}</div><input type="hidden" id="${x.id}" value="${x.id==='sexo'?'':x.o[0]}">`;
+ else if(x.t==='mun')c=`<select id="${x.id}" data-m="1">${MUN.map(o=>`<option>${o}</option>`).join('')}<option value="__o">Otro (escribir)</option></select><input id="${x.id}_o" class="hid" placeholder="Municipio, Departamento" style="margin-top:8px">`;
+ else if(x.t==='ro')c=`<input id="${x.id}" readonly placeholder="—">`;
+ else c=`<input id="${x.id}" type="${x.t}" ${x.t==='number'?'step="any" min="0" inputmode="decimal"':''} ${x.m?`inputmode="${x.m}"`:''} ${x.list?`list="${x.list}"`:''} ${x.ph?`placeholder="${x.ph}"`:''} value="${x.v||''}" ${req} ${x.g?'data-r="1"':''}>`;
+ if(x.g&&x.t==='sel')c=c;
+ return `<div class="${x.w?'w':''} ${x.g?'hid':''}" ${x.g?`data-g="${x.g}"`:''}><label>${x.l}</label>${c}${x.h?`<div class="hint" id="h_${x.id}">${x.h}</div>`:''}</div>`};
+f.innerHTML=S.map(([t,a])=>`<section class="card"><h2>${t}</h2><div class="grid">${a.map(fld).join('')}</div></section>`).join('')+`<datalist id="exp">${EXP.map(o=>`<option value="${o}">`).join('')}</datalist><button class="go" id="go" type="submit">Generar contrato</button>`;
 $('fecha').value=new Date().toISOString().slice(0,10);
-document.querySelectorAll('[data-m]').forEach(s=>s.onchange=()=>$(s.id+'_o').classList.toggle('hid',s.value!=='__o'));
-$('calidad').onchange=()=>{const e=$('calidad').selectedIndex==1;document.querySelectorAll('.emp').forEach(x=>{x.classList.toggle('hid',!e);x.querySelector('input').required=e})};
+const fmt=n=>Number(n).toLocaleString('es-CO',{maximumFractionDigits:2});
+function upd(){
+ const on={emp:$('calidad').value.startsWith('En rep'),reg:$('forma').value.startsWith('Regular'),irr:$('forma').value.startsWith('Irreg')};
+ document.querySelectorAll('[data-g]').forEach(w=>{const s=on[w.dataset.g];w.classList.toggle('hid',!s);w.querySelectorAll('[data-r]').forEach(i=>i.required=s)});
+ const a=+$('ancho').value,l=+$('largo').value;$('area').value=a>0&&l>0?fmt(a*l)+' m²':'';
+ const p=+$('precio').value;$('h_precio').textContent=p>0?'$'+fmt(p)+' · '+n2w(p):'';
+}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{const g=b.parentNode;g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$(g.dataset.for).value=b.dataset.v;upd()});
+document.querySelectorAll('[data-m]').forEach(s=>s.onchange=()=>{const o=$(s.id+'_o');o.classList.toggle('hid',s.value!=='__o');o.required=s.value==='__o'});
+f.addEventListener('input',upd);upd();
 const v=id=>{const s=$(id);return s.dataset.m?(s.value==='__o'?$(id+'_o').value.trim():s.value+', Caquetá'):s.value.trim()};
-const e=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-
 function n2w(n){const u=['','UN','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','OCHO','NUEVE','DIEZ','ONCE','DOCE','TRECE','CATORCE','QUINCE','DIECISÉIS','DIECISIETE','DIECIOCHO','DIECINUEVE','VEINTE','VEINTIUNO','VEINTIDÓS','VEINTITRÉS','VEINTICUATRO','VEINTICINCO','VEINTISÉIS','VEINTISIETE','VEINTIOCHO','VEINTINUEVE'],t=['','','','TREINTA','CUARENTA','CINCUENTA','SESENTA','SETENTA','OCHENTA','NOVENTA'],c=['','CIENTO','DOSCIENTOS','TRESCIENTOS','CUATROCIENTOS','QUINIENTOS','SEISCIENTOS','SETECIENTOS','OCHOCIENTOS','NOVECIENTOS'];
  const h=x=>{if(x==100)return'CIEN';let r=x%100,s=c[x/100|0]+' '+(r<30?u[r]:t[r/10|0]+(r%10?' Y '+u[r%10]:''));return s.trim()};
  const m=Math.floor(n/1e6)%1000,k=Math.floor(n/1e3)%1000,r=n%1000;let s='';
@@ -83,23 +112,34 @@ function n2w(n){const u=['','UN','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','O
  s=s.trim().replace(/VEINTIUNO (MIL|MILLONES)/,'VEINTIÚN $1');
  return s+((k||r)?' PESOS':' DE PESOS')}
 
+
+function medidas(d){
+ return d.forma.startsWith('Regular')
+  ?{area:fmt(d.ancho*d.largo)+' m²',medidas:fmt(d.ancho)+' m de ancho x '+fmt(d.largo)+' m de largo'}
+  :{area:fmt(d.area_man)+' '+d.unidad,medidas:'Predio irregular, según escritura'};
+}
 function buildVars(d){
  const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
- const mujer=d.sexo==='Mujer',emp=d.calidad.startsWith('En rep'),EP=(emp||mujer)?'LA PROPIETARIA':'EL PROPIETARIO';
+ const mujer=d.sexo==='Mujer',emp=d.calidad.startsWith('En rep'),EP=(emp||mujer)?'LA PROPIETARIA':'EL PROPIETARIO',C=CORREDOR;
+ const md=medidas(d),join=(a,e,t)=>[a,t&&'teléfono '+t,e&&'correo electrónico '+e].filter(Boolean).join(', ');
  return {consecutivo:d.consecutivo,lugar:d.lugar,dia:String(+d.fecha.slice(8)),mes:M[+d.fecha.slice(5,7)-1],anio:d.fecha.slice(0,4),
   EP,identificado:mujer?'identificada':'identificado',obligado:EP==='LA PROPIETARIA'?'obligada':'obligado',
-  nombre:d.nombre,nombre_mayus:d.nombre.toUpperCase(),cedula:d.cedula,domicilio:d.domicilio,
+  nombre:d.nombre,nombre_mayus:d.nombre.toUpperCase(),cedula:d.cedula,cedula_exp:d.cedula_exp,domicilio:d.domicilio,
   empresa:emp,empresa_nombre:d.empresa,nit:d.nit,
-  cnombre:d.cnombre,cnombre_mayus:d.cnombre.toUpperCase(),cced:d.cced,cdom:d.cdom,ccargo:d.ccargo,cemp:d.cemp,cnit:d.cnit,
-  tipo:d.tipo,ubic:d.ubic,muni_inm:d.muni_inm,area:d.area,matricula:d.matricula,catastral:d.catastral||'N/A',grav:d.grav||'ninguna',
-  precio:Number(d.precio).toLocaleString('es-CO'),precio_letras:n2w(+d.precio),pct:d.pct,dias:d.dias,prot:d.prot,
-  sede:d.sede.replace('[P]',EP),dir:d.dir,email:d.email,tel:d.tel,
-  ccontacto:[d.cdir,d.cemail,d.ctel].filter(Boolean).join(', ')||d.cdom};
+  cnombre:C.cnombre,cnombre_mayus:C.cnombre.toUpperCase(),cced:C.cced,cdom:C.cdom,ccargo:C.ccargo,cemp:C.cemp,cnit:C.cnit,
+  tipo:d.tipo,ubic:d.ubic,muni_inm:d.muni_inm,area:md.area,medidas:md.medidas,matricula:d.matricula,catastral:d.catastral||'N/A',grav:d.grav||'ninguna',
+  precio:fmt(d.precio),precio_letras:n2w(+d.precio),pct:d.pct,dias:d.dias,prot:d.prot,
+  sede:d.sede.replace('[P]',EP),pcontacto:join(d.dir,d.email,d.tel),ccontacto:join(C.cdir,C.cemail,C.ctel)};
 }
-f.onsubmit=async ev=>{ev.preventDefault();const st=$('st');st.textContent='Generando…';
- const d={};F.forEach(([id])=>{if(id!=='sec')d[id]=v(id)});
+const st=$('st'),msg=(t,c)=>{st.className=c;st.innerHTML=t;st.scrollIntoView({behavior:'smooth',block:'center'})};
+f.onsubmit=async ev=>{ev.preventDefault();
+ if(!f.checkValidity()){f.reportValidity();return}
+ if(!$('sexo').value){msg('Seleccione el sexo del propietario (Mujer u Hombre).','err');return}
+ const go=$('go');go.disabled=true;go.textContent='Generando…';
+ const d={};S.forEach(([,a])=>a.forEach(x=>{if(x.t!=='ro')d[x.id]=v(x.id)}));
  const n=new Date(),p=x=>String(x).padStart(2,'0');
  d.consecutivo=`CC-${n.getFullYear()}${p(n.getMonth()+1)}${p(n.getDate())}-${p(n.getHours())}${p(n.getMinutes())}${p(n.getSeconds())}`;
+ Object.assign(d,medidas(d));
  try{
   const r=await fetch('plantilla_contrato.docx?'+Date.now());if(!r.ok)throw new Error('No se encontró plantilla_contrato.docx en el repositorio');
   const doc=new docxtemplater(new PizZip(await r.arrayBuffer()),{paragraphLoop:true,linebreaks:true,nullGetter:()=>''});
@@ -107,10 +147,11 @@ f.onsubmit=async ev=>{ev.preventDefault();const st=$('st');st.textContent='Gener
   const fname=('Contrato '+d.nombre+' - '+d.muni_inm.split(',')[0]).replace(/[\\\/:*?"<>|]/g,'').replace(/\s+/g,' ').trim()+'.docx';
   const z=doc.getZip(),mime='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   const a=document.createElement('a');a.href=URL.createObjectURL(z.generate({type:'blob',mimeType:mime}));a.download=fname;a.click();
-  const show=m=>st.innerHTML=m+` <a href="${a.href}" download="${a.download}">Descargar de nuevo (${a.download})</a>`;
+  const show=(m,c='ok')=>msg(m+` <a href="${a.href}" download="${fname}">Descargar de nuevo</a>`,c);
   show('Contrato generado y descargado.');
   if(!SCRIPT_URL){show('Contrato generado y descargado (sin guardar en Drive: falta configurar SCRIPT_URL).');return}
-  await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({datos:d,nombre:fname,archivo:z.generate({type:'base64'})})});
-  show('Contrato generado, descargado y guardado en Drive.');
- }catch(x){st.textContent='Error: '+(x.properties&&x.properties.errors?x.properties.errors.map(y=>y.properties.explanation).join(' | '):x.message)}};
+  try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({datos:d,nombre:fname,archivo:z.generate({type:'base64'})})});show('Contrato generado, descargado y guardado en Drive.')}
+  catch(x){show('Contrato descargado, pero no se pudo guardar en Drive: '+x.message,'err')}
+ }catch(x){msg('Error: '+(x.properties&&x.properties.errors?x.properties.errors.map(y=>y.properties.explanation).join(' | '):x.message),'err')}
+ finally{go.disabled=false;go.textContent='Generar contrato'}};
 </script></body></html>
